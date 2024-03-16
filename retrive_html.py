@@ -11,6 +11,16 @@ def parse_datetime(date_string):
     parsed_datetime = datetime.strptime(date_string, date_format)
     formatted_date = parsed_datetime.strftime('%Y%m%d')
     return formatted_date
+def remove_links_text(html_text):
+    raw_text = html_text
+    for a_tag in soup.find_all('a'):
+        raw_text = raw_text.replace(a_tag.get_text(), '')
+    return raw_text
+def html_to_raw_text(html):
+    raw_text = html.text
+    for a_tag in html.find_all('a'):
+        raw_text = raw_text.replace(a_tag.get_text(), '')
+    return raw_text.strip().replace('\n', '')
 
 # def extract_raw_text(html_text):
 #     soup = BeautifulSoup(html_text, 'html.parser')
@@ -18,7 +28,13 @@ def parse_datetime(date_string):
 #         element.extract()
 #     raw_text = soup.get_text(separator='', strip=True)
 #     return raw_text
-
+def remove_classes_and_styles(html):
+    for tag in html.find_all(True):
+        if 'class' in tag.attrs:
+            del tag['class']
+        if 'style' in tag.attrs:
+            del tag['style']
+    return html
 def write_to_csv(data_list, filename):
     with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile, delimiter=';')
@@ -63,10 +79,12 @@ def process_links(unique_links):
             title = upper_box.find('h2').text
             publication_date = parse_datetime(extract_date(publication_date.strip()))
             update_date = parse_datetime(extract_date(update_date.strip()))
-            raw_text = (html_text).strip()
+            raw_text = html_to_raw_text(html)
+            html= remove_classes_and_styles(html)
             data_list = [[publication_date, update_date, location, title, html, raw_text]]
             filename = "output.csv"
             write_to_csv(data_list, filename)
+            
         else:
             print("Failed to navigate to:", link)
 
