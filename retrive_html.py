@@ -61,26 +61,32 @@ def process_links(unique_links):
             content_side = row_clearfix.find('div', class_='content-side col-lg-8 col-md-8 col-sm-12 col-xs-12')
             content = content_side.find('div', class_='content')
             blong_single_post = content.find('div', class_='blog-single news-details')
-            html_text = content.find('div', class_='text').text
             html= content.find('div', class_='text')
             inner_box = blong_single_post.find('div', class_='inner-box')
             upper_box = inner_box.find('div', class_='upper-box')
             #details_list = upper_box.find('ul', class_='post-meta hidden-sm hidden-md hidden-lg')
             details_hidden_list = upper_box.find('ul', class_='post-meta hidden-xs')
             list_items = details_hidden_list.find_all('li')
-            location = list_items[1].text
-            publication_date = list_items[2].text
-            if len(list_items) >= 5:
-                update_date = list_items[4].text
-            else:
-                update_date = "NA"
-            if len(list_items)<5:
-                continue
+            categories = {}
+            for item in list_items:
+                span = item.find('span')  
+                if span:
+                    span_class = span.get('class')  
+                    last_class = span_class[-1]                    
+                    if 'Publish-' in item.text:
+                        categories[last_class+'-p']=item.text
+                    if 'Update-' in item.text:
+                        categories[last_class+'-u']=item.text
+                    else:
+                        categories[last_class]=item.text
+            location = categories.get('fa-map-marker', 'NA')
+            publication_date = categories.get('qb-clock-p', 'NA')
+            update_date = categories.get('qb-clock-u', 'NA')
+            
             title = upper_box.find('h2').text
             publication_date = parse_datetime(extract_date(publication_date.strip()))
             update_date = parse_datetime(extract_date(update_date.strip()))
             raw_text = html_to_raw_text(html)
-            html= remove_classes_and_styles(html)
             data_list = [[publication_date, update_date, location, title, html, raw_text]]
             filename = "output.csv"
             write_to_csv(data_list, filename)
@@ -104,11 +110,15 @@ for i in range(1, 400):
             for link in links[:20]:
                 href = link.get('href')
                 if href:
-                    link_response = requests.get(href)
-                    if link_response.status_code == 200:
-                        unique_links.add(href)
+                    if "https://unb.com.bd/category/World/" in href:
+                        print(link)
+                        continue
                     else:
-                        print("Failed to navigate to:", href)
+                        link_response = requests.get(href)
+                        if link_response.status_code == 200:
+                            unique_links.add(href)
+                        else:
+                            print("Failed to navigate to:", href)
             process_links(unique_links)
             time.sleep(10)
         else:
