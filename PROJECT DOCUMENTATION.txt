@@ -1,0 +1,46 @@
+PROJECT DOCUMENTATION
+
+_____Data Acquisition Module_____
+
+This module is responsible for retrieving and processing raw data from various sources, transforming it into a usable format for further analysis. 
+
+Libraries:
+1. requests: Used for making HTTP requests to fetch data from APIs and web pages.
+2. BeautifulSoup: Used for parsing HTML and extracting useful information.
+3. time: Used for handling delays in the data retrieval process.
+4. csv: Used for reading from and writing to CSV files.
+5. datetime: Used for parsing and formatting date and time information.
+
+Key Functions and Scripts:
+1. retrieve_html.py: This script retrieves HTML content from web pages, extracts relevant data, and writes it to a CSV file.
+2. parse_datetime(date_string): Parses a date string into a formatted date.
+3. remove_links_text(html_text): Removes link text from the HTML content.
+4. html_to_raw_text(html): Converts HTML content to raw text, removing link texts.
+5. write_to_csv(data_list, filename): Writes a list of data to a CSV file.
+6. process_links(unique_links): Processes a set of unique links to extract and save data.
+
+_____Data Processing_____
+
+This module processes the acquired data, including cleaning, validating, and extracting relevant information. 
+
+Libraries:
+1. csv: Used for reading from and writing to CSV files.
+2. re: Used for regular expression operations.
+3. nltk: Used for natural language processing tasks, such as tokenization, part-of-speech tagging, and stopwords removal.
+4. string: Used for string operations.
+5. requests: Used for making HTTP requests to fetch additional data from APIs.
+6. logging: Used for logging information, warnings, and errors during the data processing.
+7. openai: Used for interacting with the OpenAI API to get responses based on the processed text data.
+
+Key Functions and Scripts:
+1. main.py: This script includes functions for data processing and interacts with the OpenAI API.
+2. sum_numbers(*args): Sums up a list of numbers.
+3. validate_data(casualties, injured): Validates the casualty and injury data.
+4. find_casualties(raw_text): Finds casualties in the raw text using NLP techniques.
+5. get_district_by_city(city_name, api_key): Fetches the district information by city name using the OpenCage API.
+6. process_raw_text(raw_text): Processes raw text to extract vehicles involved, casualties, and injuries, and interacts with the OpenAI API to get accident sequences and reasons.
+7. clean_city_name(location): Cleans the city name from the location string.
+8. process_csv(input_csv, output_csv, api_key): Processes a CSV file, extracting and validating data, and writing the processed data to a new CSV file.
+9. get_openai_response.py: This script defines a function to interact with the OpenAI API.
+10. get_openai_response(prompt, api_key): Sends a prompt to the OpenAI API and returns the response.
+
