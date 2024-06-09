@@ -1,6 +1,6 @@
-PROJECT DOCUMENTATION
+///PROJECT DOCUMENTATION
 
-_____Data Acquisition Module_____
+//_____Data Acquisition Module_____
 
 This module is responsible for retrieving and processing raw data from various sources, transforming it into a usable format for further analysis. 
 
@@ -19,7 +19,7 @@ Key Functions and Scripts:
 5. write_to_csv(data_list, filename): Writes a list of data to a CSV file.
 6. process_links(unique_links): Processes a set of unique links to extract and save data.
 
-_____Data Processing_____
+//_____Data Processing_____
 
 This module processes the acquired data, including cleaning, validating, and extracting relevant information. 
 
