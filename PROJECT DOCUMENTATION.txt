@@ -44,3 +44,47 @@ Key Functions and Scripts:
 9. get_openai_response.py: This script defines a function to interact with the OpenAI API.
 10. get_openai_response(prompt, api_key): Sends a prompt to the OpenAI API and returns the response.
 
+
+_____Graphical User Interface (GUI)_____
+
+This module is responsible for providing an interactive user interface to visualize and interact with the processed data. It leverages Electron to create a desktop application, integrating various data visualization and user interaction functionalities.
+
+Libraries:
+1. axios: Used for making HTTP requests to fetch data from APIs.
+2. fs: Used for file system operations such as reading and writing files.
+3. csv-parser: Used for parsing CSV files.
+4. electron: Used for building the desktop application, including modules like app, BrowserWindow, and ipcMain.
+5. path: Used for handling and transforming file paths.
+6. leaflet: Used for interactive maps.
+
+Key Functions and Scripts:
+1. main.js: This is the main script that initializes the Electron application, handles data loading, and manages inter-process communication (IPC).
+    - getPath(relativePath): Resolves the absolute path for a given relative path based on whether the app is packaged.
+    - loadDataFromFile(filePath): Loads data from a CSV file, filtering records with non-empty location or district fields, and stores them in the accidents array.
+    - IPC Handlers:
+        - ipcMain.handle("get-accidents"): Handles IPC requests to retrieve the loaded accident data.
+2. preload.js: This script runs in the context of the Electron renderer process and bridges the front-end with Node.js APIs, enabling secure communication and interaction with the main process.
+    - mapAPI: An object that provides methods for interacting with the map and handling data.
+        - createMap: Initializes a Leaflet map centered on a specific location.
+        - addMarkers: Adds markers to the map for each accident within the specified date range, clearing existing markers first.
+        - clearMarkers: Removes all markers from the map.
+        - retrieveAccidents: Retrieves accident data from the main process via IPC.
+        - fetchLocations: Updates and saves the geocoded locations for accidents.
+        - processArticle: Sends a request to the main process to process a specific article URL.
+3. renderer.js: This script handles the front-end logic, user interactions, and map rendering in the Electron application.
+    - Event Listeners:
+        - window.onload: Loads the map, retrieves accident data, and adds markers on initial load.
+    - Helper Functions:
+        - switchUIOff(state): Disables or enables UI elements based on the state.
+        - LoadMap(): Initializes and returns the Leaflet map instance.
+        - accidentFilter(accident): Filters accidents based on specific criteria.
+        - convertDateFormat(dateString): Converts a date string from YYYYMMDD format to YYYY-MM-DD.
+        - updateButtonText(): Updates the button text based on its disabled state.
+4. utils.js: This script provides utility functions for geocoding cities, rendering map markers, and formatting dates.
+    - geocodeCity(cityName): Geocodes a city name to obtain latitude, longitude, and address details.
+    - generateId(): Generates a random ID string.
+    - dataParser(data): Parses data strings, returning "no data" for empty or invalid entries.
+    - stringToDate(dateString): Converts a date string in YYYYMMDD format to a JavaScript Date object.
+    - renderMarkers(map, accidents, startDate, endDate): Renders markers on the map for accidents within the specified date range.
+    - renderSingleMarker(map, accident): Renders a single marker on the map for a given accident.
+    - strip(str): Strips the first and last characters from a string.
