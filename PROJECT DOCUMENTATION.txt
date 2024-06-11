@@ -14,7 +14,6 @@ Libraries:
 Key Functions and Scripts:
 1. retrieve_html.py: This script retrieves HTML content from web pages, extracts relevant data, and writes it to a CSV file.
 2. parse_datetime(date_string): Parses a date string into a formatted date.
-3. remove_links_text(html_text): Removes link text from the HTML content.
 4. html_to_raw_text(html): Converts HTML content to raw text, removing link texts.
 5. write_to_csv(data_list, filename): Writes a list of data to a CSV file.
 6. process_links(unique_links): Processes a set of unique links to extract and save data.

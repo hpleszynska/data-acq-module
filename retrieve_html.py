@@ -11,23 +11,12 @@ def parse_datetime(date_string):
     parsed_datetime = datetime.strptime(date_string, date_format)
     formatted_date = parsed_datetime.strftime('%Y%m%d')
     return formatted_date
-def remove_links_text(html_text):
-    raw_text = html_text
-    for a_tag in soup.find_all('a'):
-        raw_text = raw_text.replace(a_tag.get_text(), '')
-    return raw_text
+
 def html_to_raw_text(html):
     raw_text = html.text
     for a_tag in html.find_all('a'):
         raw_text = raw_text.replace(a_tag.get_text(), '')
     return raw_text.strip().replace('\n', '')
-
-# def extract_raw_text(html_text):
-#     soup = BeautifulSoup(html_text, 'html.parser')
-#     for element in soup.find_all(['a', 'script']):
-#         element.extract()
-#     raw_text = soup.get_text(separator='', strip=True)
-#     return raw_text
 
 def write_to_csv(data_list, filename):
     with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
@@ -56,7 +45,6 @@ def process_links(unique_links):
             html= content.find('div', class_='text')
             inner_box = blong_single_post.find('div', class_='inner-box')
             upper_box = inner_box.find('div', class_='upper-box')
-            #details_list = upper_box.find('ul', class_='post-meta hidden-sm hidden-md hidden-lg')
             details_hidden_list = upper_box.find('ul', class_='post-meta hidden-xs')
             list_items = details_hidden_list.find_all('li')
             categories = {}
@@ -86,8 +74,6 @@ def process_links(unique_links):
             print("Failed to navigate to:", link)
 
 
-#for loop that fetches posts from the UNB website
-#The loop will fetch 400 pages of posts 
 for i in range(1, 10000):
     url = "https://unb.com.bd/api/tag-news?tag_id=54&item=%d" % (i)
     response = requests.get(url)
